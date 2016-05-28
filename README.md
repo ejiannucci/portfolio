@@ -1,2 +1,2 @@
-# portfolio
-collection of work and experiments
+# Portfolio
+A collection of work and experiments in development.

@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "description": "Portfolio of development projects",
   "main": "main.js",
-  "scripts": {
-    "start": "open http://localhost:3000 & httpster -p 3000"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ejiannucci/portfolio.git"
@@ -23,6 +20,8 @@
     "browser-sync": "^2.12.8",
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.0",
+    "gulp-cssmin": "^0.1.7",
+    "gulp-rename": "^1.2.2",
     "gulp-sass": "^2.3.1",
     "gulp-uglify": "^1.5.3"
   }

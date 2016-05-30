@@ -1,6 +1,9 @@
+@import "normalize";
+@import "variables";
+@import "header";
+@import "footer";
+@import "main-content";
+
 body {
-	color: red;
-	p{
-		font-size: 32px;
-	}
+	color: $black;
 }

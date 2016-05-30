@@ -1,19 +1,32 @@
 var gulp = require('gulp');
+var concat = require('gulp-concat');
+var cssmin = require('gulp-cssmin');
+var rename = require('gulp-rename');
 var sass = require('gulp-sass');
 var browserSync = require('browser-sync').create();
+var uglify = require('gulp-uglify');
 
-var sassSources = ['app/dev/sass/**/*.scss']
+var htmlSources = ['app/dev/**/*.html'];
+var sassSources = ['app/dev/sass/**/*.scss'];
+var jsSources = ['app/dev/js/header.js', 'app/dev/js/**/*.js'];
 
-gulp.task('sass', function(){
+gulp.task('compileSASS', function(){
 	gulp.src(sassSources)
 	.pipe(sass({
 		outputStyle: 'expanded'
 	}))
-	.pipe(gulp.dest('app/dev/css'))
+	.pipe(rename('master.css'))
+	.pipe(gulp.dest('app/dev/compiled/css'))
 	.pipe(browserSync.reload({
 		stream: true
 	}))
-})
+});
+
+gulp.task('compileJS', function() {
+	gulp.src(jsSources)
+	.pipe(concat('main.js'))
+	.pipe(gulp.dest('app/dev/compiled/js'))
+});
 
 gulp.task('browserSync', function() {
   browserSync.init({
@@ -21,11 +34,28 @@ gulp.task('browserSync', function() {
       baseDir: 'app/dev'
     },
   })
-})
-
-gulp.task('watch', ['browserSync', 'sass'], function() {
-  gulp.watch(sassSources, ['sass']);
-  gulp.watch('app/dev/*.html', browserSync.reload); 
 });
 
-gulp.task('default', ['sass']);
+gulp.task('buildCSS', function() {
+  return gulp.src(sassSources)
+    .pipe(concat('compiled.css'))
+    .pipe(cssmin())
+	.pipe(rename({suffix: '.min'}))
+    .pipe(gulp.dest('app/dist/css'));
+});
+
+gulp.task('buildJS', function() {
+	gulp.src(jsSources)
+	.pipe(concat('main.js'))
+	.pipe(uglify())
+	.pipe(gulp.dest('app/dist/js'))
+});
+
+gulp.task('watch', ['browserSync', 'compileSASS', 'compileJS'], function() {
+  gulp.watch(sassSources, ['compileSASS']);
+  gulp.watch(jsSources, ['compileJS']);
+  gulp.watch(htmlSources, browserSync.reload); 
+});
+
+gulp.task('build', ['buildCSS', 'buildJS']);
+gulp.task('default', ['compileSASS', 'compileJS', 'watch']);

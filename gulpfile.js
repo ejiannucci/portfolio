@@ -8,7 +8,7 @@ var uglify = require('gulp-uglify');
 
 var htmlSources = ['app/dev/**/*.html'];
 var sassSources = ['app/dev/sass/**/*.scss'];
-var jsSources = ['app/dev/js/header.js', 'app/dev/js/**/*.js'];
+var jsSources = ['app/dev/js/**/*.js'];
 
 gulp.task('compileSASS', function(){
 	gulp.src(sassSources)
@@ -48,6 +48,7 @@ gulp.task('buildJS', function() {
 	gulp.src(jsSources)
 	.pipe(concat('main.js'))
 	.pipe(uglify())
+	.pipe(rename({suffix: '.min'}))
 	.pipe(gulp.dest('app/dist/js'))
 });
 

@@ -1,4 +1,4 @@
 /*global js*/
 $(document).ready(function() {
-	alert('global loaded')
+	alert('global loaded');
 });
